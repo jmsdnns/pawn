@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+const soundcloud = require('../streams/soundcloud');
+
+const SOUNDCLOUD_URL = "https://soundcloud.com/americanfood/never-forget-pt-2"
+console.log("SOUNDCLOUD URL: " + SOUNDCLOUD_URL);
+
+soundcloud.parseSourcePage(SOUNDCLOUD_URL).then((result) => {
+    console.log("CLIENT ID:   " + result.clientID);
+    console.log("URLS: " + result.streams.length);
+    console.log(result.streams[0]);
+    console.log(result.streams[1]);
+    console.log(result.streams[2]);
+})

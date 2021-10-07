@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+const config = require('../config');
+const client = require('../bot/client');
+const audio = require('../bot/audio');
+
+
+// Thanks for stopping by! Plz check out my soundcloud.
+const playlist = [];
+playlist.push("https://americanfood.bandcamp.com/album/wanna-be-a-cat");
+playlist.push("https://soundcloud.com/shipyards/headfirst-dive");
+playlist.push("https://seagravesbk.bandcamp.com/track/dont-try");
+playlist.push("https://soundcloud.com/firstfirstaidkit/living-or-lively");
+
+
+// Do it
+const player = audio.makePlayer(config, playlist);
+const zoneBot = client.makeClient(config, player);
+zoneBot.login(config.botToken);

@@ -1,0 +1,23 @@
+{
+  "name": "pawn",
+  "version": "0.1.0",
+  "description": "Pawn is a bot for streaming URLs into voice channels",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jms Dnns",
+  "dependencies": {
+    "@discordjs/builders": "^0.6.0",
+    "@discordjs/opus": "^0.5.3",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "@discordjs/voice": "^0.6.0",
+    "@hapi/joi": "^17.1.1",
+    "axios": "^0.21.4",
+    "cheerio": "^1.0.0-rc.10",
+    "discord-api-types": "^0.23.1",
+    "discord.js": "^13.1.0",
+    "ffmpeg-static": "^4.4.0",
+    "sodium": "^3.0.2"
+  }
+}
