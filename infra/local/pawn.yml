@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+
+  app:
+    build:
+      context: ../..
+      dockerfile: app/containers/pawn/Dockerfile
+    image: pawn:latest
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - BOT_TOKEN=${BOT_TOKEN}
+      - VOICE_CHANNEL_ID=${VOICE_CHANNEL_ID}
+      - STATUS_CHANNEL_ID=${STATUS_CHANNEL_ID}
+      - CMD_PREFIX=${CMD_PREFIX}
+    volumes:
+      - ${PWD}/app:/usr/src/app
+      - /usr/src/app/node_modules
+
+  pawndb:
+    build:
+      context: db
+      dockerfile: Dockerfile
+    image: pawndb:latest
+    volumes:
+      - '${PWD}:/pawn'
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
