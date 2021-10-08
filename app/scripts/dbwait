@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+
+const { Client } = require("pg");
+
+
+let timeout = 60;
+
+const dbChecker = async () => {
+
+    const client = new Client({
+        connectionString: process.env.API_DB_PATH
+    });
+
+    await client.connect()
+        .catch(() => {
+            console.log("- waiting");
+            if (timeout > 0) {
+                timeout = timeout - 1;
+                setTimeout(dbChecker, 1000);
+            }
+            else {
+                console.log("- database timed out");
+                return process.exit(-1);
+            }
+        });
+
+    await client.query("SELECT version();")
+        .then(() => {
+            console.log("- database online");
+            return process.exit(0);
+        })
+        .catch(() => {
+            if (timeout > 0) {
+                timeout = timeout - 1;
+                setTimeout(dbChecker, 1000);
+            } else {
+                console.log("- database timed out");
+                return process.exit(-1);
+            }
+        });
+};
+
+console.log("Waiting for DB to come online");
+(async () => await dbChecker())();
