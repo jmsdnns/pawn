@@ -92,7 +92,7 @@ exports.makePlayer = (config, songs) => {
 
             https.get(audioFile, options, (stream) => {
                 console.log("GETTING HTTP STREAM");
-                console.log(stream.headers);
+                // console.log(stream.headers);
 
                 const resource = createAudioResource(stream);
                 player.audioPlayer.play(resource);
