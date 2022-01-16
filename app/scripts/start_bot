@@ -55,7 +55,9 @@ playlist.push("https://soundcloud.com/shipyards/headfirst-dive");
 playlist.push("https://seagravesbk.bandcamp.com/track/dont-try");
 
 
-// Do it
-const player = audio.makePlayer(config, playlist);
+const player = audio.makePlayer(config);
 const pawn = client.makeClient(config, player);
+
+player.setPlaylist(playlist);
+
 pawn.login(config.botToken);
