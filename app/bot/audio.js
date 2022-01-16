@@ -36,7 +36,6 @@ exports.makePlayer = (config, songs) => {
 
     player.audioPlayer.on(AudioPlayerStatus.Idle, () => {
         console.log("IDLE");
-
         return player.nextSong();
     });
 
@@ -88,7 +87,7 @@ exports.makePlayer = (config, songs) => {
 
         // URL path
         if (audioFile && audioFile.startsWith('https')) {
-            const ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:32.0) Gecko/20210430 Firefox/88.0";
+            const ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 12.1; rv:96.0) Gecko/20210430 Firefox/96.0";
             const options = { headers: { 'User-Agent': ua } };
 
             https.get(audioFile, options, (stream) => {
