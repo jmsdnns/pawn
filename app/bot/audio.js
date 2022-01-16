@@ -21,7 +21,6 @@ exports.makePlayer = (config) => {
 
     player.audioPlayer = createAudioPlayer();
     player.config = config;
-    // player.currentSong = "";
 
     player.setPlaylist = (songs) => {
         player.playlist = makePlaylist(songs);
@@ -36,16 +35,15 @@ exports.makePlayer = (config) => {
     player.audioPlayer.on(AudioPlayerStatus.Playing, async () => {
         console.log('STATUS is PLAYING');
 
-        const nextSong = player.playlist.next();
         const textChannel = await player.getStatusChannel();
-        textChannel.send('Now playing: ' + nextSong);
+        textChannel.send('Now playing: ' + player.currentSong);
     });
 
     player.audioPlayer.on('error', error => {
         console.error('ERROR:', error.message);
     });
 
-    player.audioPlayer.on(AudioPlayerStatus.Idle, () => {
+    player.audioPlayer.on(AudioPlayerStatus.Idle, async () => {
         console.log("IDLE");
         player.nextSong();
     });
@@ -55,7 +53,7 @@ exports.makePlayer = (config) => {
 
     player.run = async () => {
         await player.joinRadioChannel();
-        return player.nextSong();
+        player.nextSong();
     }
 
     player.nextSong = async () => {
@@ -108,7 +106,7 @@ exports.makePlayer = (config) => {
 
                 const resource = createAudioResource(stream);
                 player.audioPlayer.play(resource);
-                entersState(player.audioPlayer, AudioPlayerStatus.Playing, 5e3);
+                // entersState(player.audioPlayer, AudioPlayerStatus.Playing, 5e3);
                 console.log("DONE");
 
                 return {
@@ -249,7 +247,8 @@ exports.makePlayer = (config) => {
         // PLAY MESSAGE
         if (message.content === config.cmdPrefix + 'play') {
             console.log("PLAY");
-            if (player.nextSong()) {
+            const { status } = await player.nextSong();
+            if (status == 'ok') {
                 return { status: 'ok', type: 'pause' };
             }
             return { status: 'error', type: 'pause' };
@@ -277,7 +276,7 @@ exports.makePlayer = (config) => {
         if (message.content === config.cmdPrefix + 'skip') {
             console.log("SKIP");
             // This method follows: { status: ..., type: ... }
-            return await player.nextSong();
+            player.nextSong();
         }
 
         // ADD MESSAGE
