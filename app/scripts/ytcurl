@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+const youtube = require('../streams/youtube');
+
+
+const YOUTUBE_URL = "https://www.youtube.com/watch?v=tHMQbwp_rAg"
+console.log("YOUTUBE_URL: " + YOUTUBE_URL);
+
+youtube.parseSourcePage(YOUTUBE_URL).then((result) => {
+    console.log("URLS: " + result.streams.length);
+    console.log(result.streams);
+});
+
