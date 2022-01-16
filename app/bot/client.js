@@ -16,7 +16,6 @@ exports.makeClient = (config, service) => {
     client.once('ready', async (message) => {
         try {
             console.log("READY MESSAGE");
-            console.log(message);
             await service.run(config);
         } catch (error) {
             console.error(error);
@@ -33,6 +32,12 @@ exports.makeClient = (config, service) => {
 
         // Ignore messages sent by bots
         if (message.author.bot) return;
+
+        console.log("MESSAGE");
+        console.log("- content:" + message.content);
+        console.log("- channel:" + message.channelId);
+        console.log("- author: " + message.author.username);
+        console.log("-----------------------");
 
         // Parse it, yo
         await service.readMessage(message);
