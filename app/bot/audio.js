@@ -15,34 +15,46 @@ const { makePlaylist } = require("./playlist");
 
 // Audio Server
 
-exports.makePlayer = (config, songs) => {
+exports.makePlayer = (config) => {
 
     const player = {};
 
     player.audioPlayer = createAudioPlayer();
-    player.playlist = makePlaylist(songs);
+    player.config = config;
     // player.currentSong = "";
 
+    player.setPlaylist = (songs) => {
+        player.playlist = makePlaylist(songs);
+    };
+
+    player.setClient = (client) => {
+        player.client = client;
+    };
 
     // EVENTS
 
-    player.audioPlayer.on(AudioPlayerStatus.Playing, () => {
+    player.audioPlayer.on(AudioPlayerStatus.Playing, async () => {
         console.log('STATUS is PLAYING');
+
+        const nextSong = player.playlist.next();
+        const textChannel = await player.getStatusChannel();
+        textChannel.send('Now playing: ' + nextSong);
     });
 
     player.audioPlayer.on('error', error => {
-        console.error('ERROR:', error.message, 'with track', error.resource.metadata.title);
+        console.error('ERROR:', error.message);
     });
 
     player.audioPlayer.on(AudioPlayerStatus.Idle, () => {
         console.log("IDLE");
-        return player.nextSong();
+        player.nextSong();
     });
 
 
     // JUKEBOX
 
     player.run = async () => {
+        await player.joinRadioChannel();
         return player.nextSong();
     }
 
@@ -60,7 +72,7 @@ exports.makePlayer = (config, songs) => {
                 const { resource } = await player.playSong(uri);
 
                 console.log('STREAMING');
-                console.log(uri);
+                // console.log(uri);
         
                 return {
                     status: 'ok',
@@ -97,6 +109,7 @@ exports.makePlayer = (config, songs) => {
                 const resource = createAudioResource(stream);
                 player.audioPlayer.play(resource);
                 entersState(player.audioPlayer, AudioPlayerStatus.Playing, 5e3);
+                console.log("DONE");
 
                 return {
                     status: 'ok',
@@ -119,20 +132,28 @@ exports.makePlayer = (config, songs) => {
 
     // CHANNELS
 
-    player.getVoiceChannel = async (channels, channelID) => {     
-        return await channels.fetch(channelID)
-            .then(c => { 
-                console.log("VOICE CHANNEL FETCH OK");
-                return c;
-            })
+    player.getChannel = async (channelID) => {
+        return await player.client.channels.fetch(channelID)
             .catch(e => {
-                console.log("VOICE CHANNEL FETCH ERROR");
+                console.log("CHANNEL FETCH ERROR");
                 console.error(e);
             });
     }
 
 
-    player.connectToChannel = async (channel) => {
+    player.getVoiceChannel = () => {
+        const voiceChannel = player.getChannel(config.voiceChannelID);
+        return voiceChannel;
+    }
+
+
+    player.getStatusChannel = () => {
+        const textChannel = player.getChannel(config.statusChannelID);
+        return textChannel;
+    }
+
+
+    player.connectToVoiceChannel = async (channel) => {
         console.log("CHANNEL ID: " + channel.id);
         console.log("GUILD ID:   " + channel.guild.id);
         
@@ -151,6 +172,38 @@ exports.makePlayer = (config, songs) => {
             throw error;
         }
     }
+
+
+    player.joinRadioChannel = async () => {
+        const voiceChannel = await player.getVoiceChannel();
+        const textChannel = await player.getStatusChannel();
+
+        if (typeof voiceChannel === "undefined") {
+            textChannel.send('Voice channel ID did not match any voice channels');
+            console.log("ERROR: COULD NOT LOAD CHANNEL ID: " + config.voiceChannelID);
+            return { status: 'error', type: 'join' };
+        }
+
+        try {
+            const connection = await player.connectToVoiceChannel(voiceChannel);
+            connection.subscribe(player.audioPlayer);
+            textChannel.send('OK! Im in the voice channel now.');
+            console.log("JOIN OK");
+
+            return {
+                type: 'join',
+                status: 'ok',
+                channel: voiceChannel,
+                connection: connection
+            };
+        } catch (error) {
+            textChannel.send('Something didnt work...');
+            console.log("ERROR: JOINING CHANNEL FAILED");
+            console.error(error);
+
+            return { status: 'error', type: 'join' };
+        }
+    };
 
 
     // MESSAGES
