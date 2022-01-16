@@ -1,5 +1,6 @@
 const bandcamp = require("../streams/bandcamp");
 const soundcloud = require("../streams/soundcloud");
+const youtube = require("../streams/youtube");
 
 
 exports.makePlaylist = (songs) => {
@@ -62,6 +63,18 @@ exports.makePlaylist = (songs) => {
                         uri: stream.url
                     }
                 }
+            }
+        }
+        // Youtube
+        else if (next.indexOf('youtube.com') > 0) {
+            const { streams } = await youtube.parseSourcePage(next);
+
+            const stream = streams[0];
+            console.log("YOUTUBE");
+            console.log(stream.url);
+            return {
+                source: next,
+                uri: stream.url
             }
         }
         // Raw file
