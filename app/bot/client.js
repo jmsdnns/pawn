@@ -12,6 +12,7 @@ exports.makeClient = (config, service) => {
         ],
     });
 
+    service.setClient(client);
 
     client.once('ready', async (message) => {
         try {
@@ -24,9 +25,6 @@ exports.makeClient = (config, service) => {
 
 
     client.on('messageCreate', async (message) => {
-        console.log("MESSAGE");
-        // console.log(message);
-
         // Ignore messages from different guild
         if (!message.guild) return;
 
