@@ -6,64 +6,64 @@ const audio = require('../bot/audio');
 
 
 // Welcome to our mix tape
-const playlist = [];
+const urls = [];
 
 
 // Faraquet - Carefully Planned
-playlist.push("https://www.youtube.com/watch?v=s4A17XOjqto");
+urls.push("https://www.youtube.com/watch?v=s4A17XOjqto");
 
 // Moin - Crappy Dreams Count 
-playlist.push("https://m-o-i-n.bandcamp.com/track/crappy-dreams-count");
+urls.push("https://m-o-i-n.bandcamp.com/track/crappy-dreams-count");
 
 // Moin - Right Is Alright, Wrong Is To Belong
-playlist.push("https://m-o-i-n.bandcamp.com/track/right-is-alright-wrong-is-to-belong");
+urls.push("https://m-o-i-n.bandcamp.com/track/right-is-alright-wrong-is-to-belong");
 
 // Cornelius - Drop
-playlist.push("https://corneliusofficial.bandcamp.com/track/drop");
+urls.push("https://corneliusofficial.bandcamp.com/track/drop");
 
 // Cornelius - Point Of View Point
-playlist.push("https://corneliusofficial.bandcamp.com/track/point-of-view-point");
+urls.push("https://corneliusofficial.bandcamp.com/track/point-of-view-point");
 
 // Dry Cleaning - Magic of Meghan
-playlist.push("https://drycleaning.bandcamp.com/track/magic-of-meghan");
+urls.push("https://drycleaning.bandcamp.com/track/magic-of-meghan");
 
 // Jeff Parker - Suffolk
-playlist.push("https://intlanthem.bandcamp.com/track/suffolk");
+urls.push("https://intlanthem.bandcamp.com/track/suffolk");
 
 // Terry Allen and the Panhandle Mystery Band  - Pirate Jenny
-playlist.push("https://terryallen.bandcamp.com/track/pirate-jenny");
+urls.push("https://terryallen.bandcamp.com/track/pirate-jenny");
 
 // Larnell Lewis - The City Lights
-playlist.push("https://larnelllewis.bandcamp.com/track/the-city-lights");
+urls.push("https://larnelllewis.bandcamp.com/track/the-city-lights");
 
 // Middle Class Rut - Lifelong Dayshift
-playlist.push("https://brightantennarecords.bandcamp.com/track/lifelong-dayshift");
+urls.push("https://brightantennarecords.bandcamp.com/track/lifelong-dayshift");
 
 // Smart Went Crazy - DC Will Do That To You
-playlist.push("https://smartwentcrazy.bandcamp.com/track/dc-will-do-that-to-you");
+urls.push("https://smartwentcrazy.bandcamp.com/track/dc-will-do-that-to-you");
 
 // Spidergawd - Tourniquet
-playlist.push("https://soundcloud.com/spidergawd/tourniquet");
+urls.push("https://soundcloud.com/spidergawd/tourniquet");
 
 // Lifetime - Ferret
-playlist.push("https://lifetimenj.bandcamp.com/track/ferret");
+urls.push("https://lifetimenj.bandcamp.com/track/ferret");
 
 // Kid Dynamite - Heart A Tact
-playlist.push("https://kiddynamitephl.bandcamp.com/track/heart-a-tact-2");
+urls.push("https://kiddynamitephl.bandcamp.com/track/heart-a-tact-2");
 
 // With Honor Rethink, Return
-playlist.push("https://purenoise.bandcamp.com/track/rethink-return-2021-remastered");
+urls.push("https://purenoise.bandcamp.com/track/rethink-return-2021-remastered");
 
 // Shipyards - Headfirst Dive
-playlist.push("https://soundcloud.com/shipyards/headfirst-dive");
+urls.push("https://soundcloud.com/shipyards/headfirst-dive");
 
 // Sea Graves - Don't Try
-playlist.push("https://seagravesbk.bandcamp.com/track/dont-try");
+urls.push("https://seagravesbk.bandcamp.com/track/dont-try");
 
 
 const player = audio.makePlayer(config);
 const pawn = client.makeClient(config, player);
 
-player.setPlaylist(playlist);
+player.setPlaylist(urls);
 
 pawn.login(config.botToken);
