@@ -22,6 +22,9 @@ exports.makePlayer = (config) => {
     player.audioPlayer = createAudioPlayer();
     player.config = config;
 
+    // Used to prevent Idle events from skipping a song that is loading slowly
+    player._loadingSong = false;
+
     player.setPlaylist = (songs) => {
         player.playlist = makePlaylist(songs);
     };
@@ -30,11 +33,13 @@ exports.makePlayer = (config) => {
         player.client = client;
     };
 
+
     // EVENTS
 
     player.audioPlayer.on(AudioPlayerStatus.Playing, async () => {
         console.log('STATUS is PLAYING');
 
+        player._loadingSong = false;
         const textChannel = await player.getStatusChannel();
         textChannel.send('Now playing: ' + player.currentSong);
     });
@@ -45,7 +50,9 @@ exports.makePlayer = (config) => {
 
     player.audioPlayer.on(AudioPlayerStatus.Idle, async () => {
         console.log("IDLE");
-        player.nextSong();
+        if(player._loadingSong === false) {
+            player.nextSong();
+        }
     });
 
 
@@ -106,8 +113,7 @@ exports.makePlayer = (config) => {
 
                 const resource = createAudioResource(stream);
                 player.audioPlayer.play(resource);
-                // entersState(player.audioPlayer, AudioPlayerStatus.Playing, 5e3);
-                console.log("DONE");
+                player._loadingSong = true;
 
                 return {
                     status: 'ok',
