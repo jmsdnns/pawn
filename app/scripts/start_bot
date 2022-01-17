@@ -28,7 +28,10 @@ playlist.push("https://corneliusofficial.bandcamp.com/track/point-of-view-point"
 playlist.push("https://drycleaning.bandcamp.com/track/magic-of-meghan");
 
 // Jeff Parker - Suffolk
-playlist.push("https://intlanthem.bandcamp.com/track/suffolk")
+playlist.push("https://intlanthem.bandcamp.com/track/suffolk");
+
+//  Terry Allen and the Panhandle Mystery Band  - Pirate Jenny
+playlist.push("https://terryallen.bandcamp.com/track/pirate-jenny");
 
 // Larnell Lewis - The City Lights
 playlist.push("https://larnelllewis.bandcamp.com/track/the-city-lights");
