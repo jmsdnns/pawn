@@ -30,7 +30,7 @@ playlist.push("https://drycleaning.bandcamp.com/track/magic-of-meghan");
 // Jeff Parker - Suffolk
 playlist.push("https://intlanthem.bandcamp.com/track/suffolk");
 
-//  Terry Allen and the Panhandle Mystery Band  - Pirate Jenny
+// Terry Allen and the Panhandle Mystery Band  - Pirate Jenny
 playlist.push("https://terryallen.bandcamp.com/track/pirate-jenny");
 
 // Larnell Lewis - The City Lights
@@ -41,6 +41,9 @@ playlist.push("https://brightantennarecords.bandcamp.com/track/lifelong-dayshift
 
 // Smart Went Crazy - DC Will Do That To You
 playlist.push("https://smartwentcrazy.bandcamp.com/track/dc-will-do-that-to-you");
+
+// Spidergawd - Tourniquet
+playlist.push("https://soundcloud.com/spidergawd/tourniquet");
 
 // Lifetime - Ferret
 playlist.push("https://lifetimenj.bandcamp.com/track/ferret");
