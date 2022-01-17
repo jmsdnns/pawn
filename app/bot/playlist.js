@@ -1,25 +1,49 @@
+const fs = require("fs");
+const path = require("path");
+
 const bandcamp = require("../streams/bandcamp");
 const soundcloud = require("../streams/soundcloud");
 const youtube = require("../streams/youtube");
 
 
-exports.makePlaylist = (songs) => {
+const DATA_DIR = path.join(__dirname, "..", "data");
+const PLAYLISTS_DIR = path.join(DATA_DIR, "playlists");
+// will be meaningful later
+const PLAYLIST_FILE = path.join(PLAYLISTS_DIR, "firstplaylist.json");
+
+
+const makeSong = (url) => {
+    const now = new Date();
+
+    const song = {
+        url: url,
+        added: now,
+        lastPlay: null,
+    };
+
+    return song;
+};
+
+
+exports.makePlaylist = (urls) => {
     const playlist = {};
 
     playlist.songs = [];
     playlist.position = 0;
 
+
     // Bootstrap playlist with given songs
-    songs.forEach((song) => {
+    urls.forEach((url) => {
+        const song = makeSong(url);
         playlist.songs.push(song);
     });
-    console.log(playlist.songs);
 
 
     // METHODS
 
-    playlist.add = (srcURL) => {
-        playlist.songs.push(srcURL);
+    playlist.add = (url) => {
+        const song = makeSong(url);
+        playlist.songs.push(song);
         console.log("TOTAL SONGS: " + playlist.songs.length);
         return playlist.songs.length;
     }
@@ -30,7 +54,7 @@ exports.makePlaylist = (songs) => {
 
     playlist.setNext = async () => {
         const next = playlist.next();
-        console.log("NEXT SONG: " + next);
+        console.log("NEXT SONG: " + next.url);
 
         playlist.position++;
         if (playlist.position >= playlist.songs.length) {
@@ -38,51 +62,48 @@ exports.makePlaylist = (songs) => {
         }
 
         // Bandcamp
-        if (next.indexOf('bandcamp.com') > 0) {
-            const { streams } = await bandcamp.parseSourcePage(next);
+        if (next.url.indexOf('bandcamp.com') > 0) {
+            const { streams } = await bandcamp.parseSourcePage(next.url);
 
             const stream = streams[0];
             console.log("BANDCAMP");
-            console.log(stream.url);
             return {
-                source: next,
-                uri: stream.url
+                source: next.url,
+                url: stream.url
             }
         }
         // Soundcloud
-        else if (next.indexOf('soundcloud.com') > 0) {
-            const { streams } = await soundcloud.parseSourcePage(next);
+        else if (next.url.indexOf('soundcloud.com') > 0) {
+            const { streams } = await soundcloud.parseSourcePage(next.url);
 
             for (let i=0; i < streams.length; i++) {
                 const stream = streams[i];
                 if (stream.format == 'progressive') {
                     console.log("SOUNDCLOUD");
-                    console.log(stream.url);
                     return {
-                        source: next,
-                        uri: stream.url
+                        source: next.url,
+                        url: stream.url
                     }
                 }
             }
         }
         // Youtube
-        else if (next.indexOf('youtube.com') > 0) {
-            const { streams } = await youtube.parseSourcePage(next);
+        else if (next.url.indexOf('youtube.com') > 0) {
+            const { streams } = await youtube.parseSourcePage(next.url);
 
             const stream = streams[0];
             console.log("YOUTUBE");
-            console.log(stream.url);
             return {
-                source: next,
-                uri: stream.url
+                source: next.url,
+                url: stream.url
             }
         }
         // Raw file
         else {
             console.log("RAW FILE");
             return {
-                source: next,
-                uri: stream.url
+                source: next.url,
+                url: stream.url
             }
         }
     }

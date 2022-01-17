@@ -25,8 +25,8 @@ exports.makePlayer = (config) => {
     // Used to prevent Idle events from skipping a song that is loading slowly
     player._loadingSong = false;
 
-    player.setPlaylist = (songs) => {
-        player.playlist = makePlaylist(songs);
+    player.setPlaylist = (urls) => {
+        player.playlist = makePlaylist(urls);
     };
 
     player.setClient = (client) => {
@@ -41,7 +41,7 @@ exports.makePlayer = (config) => {
 
         player._loadingSong = false;
         const textChannel = await player.getStatusChannel();
-        textChannel.send('Now playing: ' + player.currentSong);
+        textChannel.send('Now playing: ' + player.currentSong.url);
     });
 
     player.audioPlayer.on('error', error => {
@@ -67,17 +67,14 @@ exports.makePlayer = (config) => {
         const nextSong = player.playlist.next();
         player.currentSong = nextSong;
 
-        const { source, uri } = await player.playlist.setNext();
-        console.log("RESULT");
-        console.log("- source : " + source);
-        console.log("- current: " + player.currentSong);
+        const { source, url } = await player.playlist.setNext();
 
         try {
-            if (player.currentSong === source) {
-                const { resource } = await player.playSong(uri);
+            console.log("CUR: " + player.currentSong.url);
+            console.log("SRC: " + source);
 
-                console.log('STREAMING');
-                // console.log(uri);
+            if (player.currentSong.url === source) {
+                const { resource } = await player.playSong(url);
         
                 return {
                     status: 'ok',
@@ -89,7 +86,6 @@ exports.makePlayer = (config) => {
             else {
                 console.log("STREAM SKIPPED");
                 console.log("- source : " + source);
-                console.log("- current: " + player.currentSong);
             }
         } catch(error) {
             console.log("ERROR: NEXT SONG FAILED");
@@ -99,15 +95,15 @@ exports.makePlayer = (config) => {
         }
     }
 
-    player.playSong = (audioFile) => {
-        console.log("PLAY SONG: " + audioFile);
+    player.playSong = (url) => {
+        console.log("PLAY SONG: " + url);
 
         // URL path
-        if (audioFile && audioFile.startsWith('https')) {
+        if (url && url.startsWith('https')) {
             const ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 12.1; rv:96.0) Gecko/20210430 Firefox/96.0";
             const options = { headers: { 'User-Agent': ua } };
 
-            https.get(audioFile, options, (stream) => {
+            https.get(url, options, (stream) => {
                 console.log("GETTING HTTP STREAM");
                 // console.log(stream.headers);
 
@@ -123,7 +119,7 @@ exports.makePlayer = (config) => {
         }
 
         // Local file path
-        const resource = createAudioResource(audioFile);
+        const resource = createAudioResource(url);
         player.audioPlayer.play(resource);
         entersState(player.audioPlayer, AudioPlayerStatus.Playing, 5e3);
 
