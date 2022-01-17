@@ -17,15 +17,15 @@ services:
       - ${PWD}/app:/usr/src/app
       - /usr/src/app/node_modules
 
-  pawndb:
-    build:
-      context: db
-      dockerfile: Dockerfile
-    image: pawndb:latest
-    volumes:
-      - '${PWD}:/pawn'
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+  # pawndb:
+  #   build:
+  #     context: db
+  #     dockerfile: Dockerfile
+  #   image: pawndb:latest
+  #   volumes:
+  #     - '${PWD}:/pawn'
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
