@@ -2,7 +2,7 @@ const { Client, Intents } = require('discord.js');
 
 
 exports.makeClient = (config, service) => {
-    console.log("MAKE ZONE CLIENT");
+    console.log("MAKE CLIENT");
 
     const client = new Client({
         intents: [
