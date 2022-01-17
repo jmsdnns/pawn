@@ -72,7 +72,10 @@ exports.makePlayer = (config) => {
         try {
             console.log("CUR: " + player.currentSong.url);
             console.log("SRC: " + source);
-
+            
+            // This allows users to skip several times, faster than the
+            // machinery can keep up with, and the radio will only start
+            // a stream matching the actual current song
             if (player.currentSong.url === source) {
                 const { resource } = await player.playSong(url);
         
