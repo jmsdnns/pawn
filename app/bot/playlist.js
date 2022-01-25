@@ -43,51 +43,8 @@ exports.makePlaylist = (urls) => {
             playlist.position = 0;
         }
 
-        // Bandcamp
-        if (next.url.indexOf('bandcamp.com') > 0) {
-            const { streams } = await bandcamp.parseSourcePage(next.url);
-
-            const stream = streams[0];
-            console.log("BANDCAMP");
-            return {
-                source: next.url,
-                url: stream.url
-            }
-        }
-        // Soundcloud
-        else if (next.url.indexOf('soundcloud.com') > 0) {
-            const { streams } = await soundcloud.parseSourcePage(next.url);
-
-            for (let i=0; i < streams.length; i++) {
-                const stream = streams[i];
-                if (stream.format == 'progressive') {
-                    console.log("SOUNDCLOUD");
-                    return {
-                        source: next.url,
-                        url: stream.url
-                    }
-                }
-            }
-        }
-        // Youtube
-        else if (next.url.indexOf('youtube.com') > 0) {
-            const { streams } = await youtube.parseSourcePage(next.url);
-
-            const stream = streams[0];
-            console.log("YOUTUBE");
-            return {
-                source: next.url,
-                url: stream.url
-            }
-        }
-        // Raw file
-        else {
-            console.log("RAW FILE");
-            return {
-                source: next.url,
-                url: stream.url
-            }
-        }
+        const audioURLs = await Song.getStreamURL(next.url);
+        return audioURLs;
     }
 
     return playlist;
