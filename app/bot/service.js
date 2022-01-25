@@ -71,8 +71,10 @@ exports.makePlayer = (config) => {
     }
 
     player.nextSong = async () => {
-        const nextSong = player.playlist.next();
+        const nextSong = await player.playlist.next();
         player.currentSong = nextSong;
+        console.log("NEXT");
+        console.log(nextSong);
 
         const { source, url } = await player.playlist.setNext();
 
@@ -95,7 +97,6 @@ exports.makePlayer = (config) => {
             }
             else {
                 console.log("STREAM SKIPPED");
-                console.log("- source : " + source);
             }
         } catch(error) {
             console.log("ERROR: NEXT SONG FAILED");
