@@ -1,10 +1,4 @@
-const fs = require("fs");
-const path = require("path");
-
 const Song = require("./song");
-const bandcamp = require("../streams/bandcamp");
-const soundcloud = require("../streams/soundcloud");
-const youtube = require("../streams/youtube");
 
 
 exports.makePlaylist = (urls) => {
