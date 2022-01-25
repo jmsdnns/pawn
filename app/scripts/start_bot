@@ -2,12 +2,11 @@
 
 const config = require('../config');
 const client = require('../bot/client');
-const audio = require('../bot/audio');
+const service = require('../bot/service');
 
 
 // Welcome to our mix tape
 const urls = [];
-
 
 // Faraquet - Carefully Planned
 urls.push("https://www.youtube.com/watch?v=s4A17XOjqto");
@@ -61,7 +60,7 @@ urls.push("https://soundcloud.com/shipyards/headfirst-dive");
 urls.push("https://seagravesbk.bandcamp.com/track/dont-try");
 
 
-const player = audio.makePlayer(config);
+const player = service.makePlayer(config);
 const pawn = client.makeClient(config, player);
 
 player.setPlaylist(urls);
