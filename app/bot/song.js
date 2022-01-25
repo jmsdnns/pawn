@@ -48,7 +48,7 @@ exports.getStreamURL = async (songSrc) => {
         console.log("RAW FILE");
         return {
             source: songSrc,
-            url: stream.url
+            url: songSrc
         }
     }
 };
