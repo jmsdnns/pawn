@@ -71,7 +71,7 @@ exports.makeSong = (url) => {
     };
 
     song.filepath = () => {
-        path.resolve(CACHE_DIR, song.cacheName);
+        return path.resolve(CACHE_DIR, song.cacheName);
     }
 
     song.streampath = () => {
