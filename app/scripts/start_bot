@@ -8,6 +8,12 @@ const service = require('../bot/service');
 // Welcome to our mix tape
 const urls = [];
 
+// Lifetime - Ferret
+urls.push("https://lifetimenj.bandcamp.com/track/ferret");
+
+// Kid Dynamite - Heart A Tact
+urls.push("https://kiddynamitephl.bandcamp.com/track/heart-a-tact-2");
+
 // Faraquet - Carefully Planned
 urls.push("https://www.youtube.com/watch?v=s4A17XOjqto");
 
@@ -43,12 +49,6 @@ urls.push("https://smartwentcrazy.bandcamp.com/track/dc-will-do-that-to-you");
 
 // Spidergawd - Tourniquet
 urls.push("https://soundcloud.com/spidergawd/tourniquet");
-
-// Lifetime - Ferret
-urls.push("https://lifetimenj.bandcamp.com/track/ferret");
-
-// Kid Dynamite - Heart A Tact
-urls.push("https://kiddynamitephl.bandcamp.com/track/heart-a-tact-2");
 
 // With Honor Rethink, Return
 urls.push("https://purenoise.bandcamp.com/track/rethink-return-2021-remastered");
