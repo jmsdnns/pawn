@@ -33,7 +33,6 @@ exports.makePlayer = (config) => {
         player.client = client;
     };
 
-
     // EVENTS
 
     player.audioPlayer.on(AudioPlayerStatus.Playing, async () => {
@@ -60,7 +59,15 @@ exports.makePlayer = (config) => {
 
     player.run = async () => {
         await player.joinRadioChannel();
-        player.nextSong();
+
+        const callback = (idx, song) => {
+            if (idx == 0) {
+                player.nextSong();
+            }
+            song.cached = true;
+            console.log("DL COMPLETE: " + song.url);
+        }
+        player.playlist.download({ callback });
     }
 
     player.nextSong = async () => {
@@ -70,8 +77,8 @@ exports.makePlayer = (config) => {
         const { source, url } = await player.playlist.setNext();
 
         try {
-            console.log("CUR: " + player.currentSong.url);
-            console.log("SRC: " + source);
+            // console.log("CUR: " + player.currentSong.url);
+            // console.log("SRC: " + source);
             
             // This allows users to skip several times, faster than the
             // machinery can keep up with, and the radio will only start
