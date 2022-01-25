@@ -1,28 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 
+const Song = require("./song");
 const bandcamp = require("../streams/bandcamp");
 const soundcloud = require("../streams/soundcloud");
 const youtube = require("../streams/youtube");
-
-
-const DATA_DIR = path.join(__dirname, "..", "data");
-const PLAYLISTS_DIR = path.join(DATA_DIR, "playlists");
-// will be meaningful later
-const PLAYLIST_FILE = path.join(PLAYLISTS_DIR, "firstplaylist.json");
-
-
-const makeSong = (url) => {
-    const now = new Date();
-
-    const song = {
-        url: url,
-        added: now,
-        lastPlay: null,
-    };
-
-    return song;
-};
 
 
 exports.makePlaylist = (urls) => {
@@ -34,7 +16,7 @@ exports.makePlaylist = (urls) => {
 
     // Bootstrap playlist with given songs
     urls.forEach((url) => {
-        const song = makeSong(url);
+        const song = Song.makeSong(url);
         playlist.songs.push(song);
     });
 
@@ -42,7 +24,7 @@ exports.makePlaylist = (urls) => {
     // METHODS
 
     playlist.add = (url) => {
-        const song = makeSong(url);
+        const song = Song.makeSong(url);
         playlist.songs.push(song);
         console.log("TOTAL SONGS: " + playlist.songs.length);
         return playlist.songs.length;
