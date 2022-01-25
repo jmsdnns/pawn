@@ -70,9 +70,13 @@ exports.makeSong = (url) => {
         cached: false,
     };
 
+    song.filepath = () => {
+        path.resolve(CACHE_DIR, song.cacheName);
+    }
+
     song.streampath = () => {
         if (song.cached) {
-            return path.resolve(CACHE_DIR, song.cacheName);
+            return song.filepath();
         }
         else {
             return this.getStreamURL(song.url);
